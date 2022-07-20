@@ -1,0 +1,44 @@
+.voting {
+    float: right;
+    background-color: #d2e8f3;
+    padding: 2.5em 2em;
+    margin: 0 1em;
+}
+
+.voting .voting_option {
+    display: None;
+}
+
+.btn.areyousure {
+    display: None;
+}
+
+.voting div.votes span {
+    border: 0 solid #DDDDDD;
+    cursor: pointer;
+    float: left;
+    margin: 0 0.2em;
+    padding: 0 0.5em;
+}
+
+.votes {
+    display: inline;
+    float: right;
+}
+
+.voting #voting_plus {
+    background-color: LimeGreen;
+}
+
+.voting #voting_neutral {
+    background-color: yellow;
+}
+
+.voting #voting_negative {
+    background-color: red;
+}
+
+#delete_votings,
+#delete_votings2 {
+    margin: .5em 0;
+}

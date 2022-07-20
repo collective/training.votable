@@ -1,0 +1,25 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="training.votable">
+
+ <!-- -*- extra stuff goes here -*- -->
+
+  <browser:page
+    name="vote"
+    for="training.votable.behaviors.votable.IVotableMarker"
+    class=".vote.Vote"
+    permission="training.votable.do_vote"
+    layer="training.votable.interfaces.ITrainingVotableLayer"
+    />
+
+  <browser:page
+    name="clearvotes"
+    for="training.votable.behaviors.votable.IVotableMarker"
+    class=".clear_votes.ClearVotes"
+    permission="zope2.ViewManagementScreens"
+    layer="training.votable.interfaces.ITrainingVotableLayer"
+    />
+
+</configure>

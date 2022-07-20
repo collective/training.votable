@@ -1,0 +1,29 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:plone="http://namespaces.plone.org/plone">
+
+  <plone:service
+    method="GET"
+    for="training.votable.behaviors.votable.IVotableMarker"
+    factory=".voting.VotingGet"
+    name="@votes"
+    permission="zope2.View"
+    />
+
+  <plone:service
+    method="POST"
+    for="training.votable.behaviors.votable.IVotableMarker"
+    factory=".voting.VotingPost"
+    name="@votes"
+    permission="training.votable.do_vote"
+    />
+
+  <plone:service
+    method="DELETE"
+    for="training.votable.behaviors.votable.IVotableMarker"
+    factory=".voting.VotingDelete"
+    name="@votes"
+    permission="zope2.ViewManagementScreens"
+    />
+
+</configure>

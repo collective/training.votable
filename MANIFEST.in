@@ -1,0 +1,4 @@
+graft src/training
+graft docs
+include *.rst
+global-exclude *.pyc
