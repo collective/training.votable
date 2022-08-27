@@ -7,8 +7,22 @@ from zExceptions import Unauthorized
 from zope.globalrequest import getRequest
 from zope.interface import alsoProvides
 
-from training.votable import DoVotePermission
+from training.votable import (
+    CanVotePermission,
+    ClearVotesPermission,
+    ViewVotesPermission,
+)
 from training.votable.behaviors.votable import IVotable
+
+
+class VotingGet(Service):
+    """Voting information about the current object"""
+
+    def reply(self):
+        can_view_votes = api.user.has_permission(ViewVotesPermission, obj=self.context)
+        if not can_view_votes:
+            raise Unauthorized("User not authorized to view votes.")
+        return vote_info(self.context, self.request)
 
 
 class VotingPost(Service):
@@ -16,9 +30,7 @@ class VotingPost(Service):
 
     def reply(self):
         alsoProvides(self.request, IDisableCSRFProtection)
-        can_vote = not api.user.is_anonymous() and api.user.has_permission(
-            DoVotePermission, obj=self.context
-        )
+        can_vote = api.user.has_permission(CanVotePermission, obj=self.context)
         if not can_vote:
             raise Unauthorized("User not authorized to vote.")
         voting = IVotable(self.context)
@@ -34,20 +46,13 @@ class VotingDelete(Service):
 
     def reply(self):
         alsoProvides(self.request, IDisableCSRFProtection)
-        can_vote = not api.user.is_anonymous() and api.user.has_permission(
-            DoVotePermission, obj=self.context
+        can_clear_votes = api.user.has_permission(
+            ClearVotesPermission, obj=self.context
         )
-        if not can_vote:
-            raise Unauthorized("User not authorized to delete votes.")
+        if not can_clear_votes:
+            raise Unauthorized("User not authorized to clear votes.")
         voting = IVotable(self.context)
         voting.clear()
-        return vote_info(self.context, self.request)
-
-
-class VotingGet(Service):
-    """Voting information about the current object"""
-
-    def reply(self):
         return vote_info(self.context, self.request)
 
 
@@ -56,18 +61,12 @@ def vote_info(obj, request=None):
     if not request:
         request = getRequest()
     voting = IVotable(obj)
-    can_vote = not api.user.is_anonymous() and api.user.has_permission(
-        DoVotePermission, obj=obj
-    )
-    can_clear_votes = any(
-        role in api.user.get_roles() for role in ["Manager", "Site Manager"]
-    )
     info = {
         "average_vote": voting.average_vote(),
         "total_votes": voting.total_votes(),
         "has_votes": voting.has_votes(),
         "already_voted": voting.already_voted(request),
-        "can_vote": can_vote,
-        "can_clear_votes": can_clear_votes,
+        "can_vote": api.user.has_permission(CanVotePermission, obj=obj),
+        "can_clear_votes": api.user.has_permission(ClearVotesPermission, obj=obj),
     }
     return info
