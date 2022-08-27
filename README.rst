@@ -14,22 +14,6 @@ The Add-On evolved to a Plone REST API provider for **Mastering Plone Developmen
 Plone REST API does not fit your needs, because you need more elaborated info from your backend.
 
 
-Installation
-------------
-
-Install training.votable by adding it to your buildout::
-
-    [buildout]
-
-    ...
-
-    eggs =
-        training.votable
-
-
-and then running ``bin/buildout``
-
-
 Authors
 -------
 
