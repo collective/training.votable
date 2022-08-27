@@ -112,19 +112,6 @@ class Votable(object):
     def voted(self, value):
         self.annotations["voted"] = value
 
-    def _hash(self, request):
-        """
-        This hash can be tricked out by changing IP Adresses and might allow
-        only a single person of a big company to vote
-        """
-        hash = md5()
-        hash.update(safe_bytes(request.getClientAddr()))
-        for key in ["User-Agent", "Accept-Language", "Accept-Encoding"]:
-            val = safe_bytes(request.getHeader(key))
-            if val:
-                hash.update(val)
-        return hash.hexdigest()
-
     def vote(self, vote, request):
         vote = int(vote)
         if self.already_voted(request):
@@ -133,7 +120,8 @@ class Votable(object):
             # Transactions can throw errors too.
             # What happens if you catch them?
             raise KeyError("You may not vote twice")
-        self.annotations["voted"].append(self._hash(request))
+        current_user = api.user.get_current()
+        self.annotations["voted"].append(current_user.id)
         votes = self.annotations.get("votes", {})
         if vote not in votes:
             votes[vote] = 1
@@ -159,7 +147,9 @@ class Votable(object):
         return len(self.annotations.get("votes", {})) != 0
 
     def already_voted(self, request):
-        return self._hash(request) in self.annotations["voted"]
+        current_user = api.user.get_current()
+        print("already_voted. current_user", current_user)
+        return current_user.id in self.annotations["voted"]
 
     def clear(self):
         annotations = IAnnotations(self.context)
