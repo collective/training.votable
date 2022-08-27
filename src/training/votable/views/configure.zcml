@@ -10,7 +10,7 @@
     name="vote"
     for="training.votable.behaviors.votable.IVotableMarker"
     class=".vote.Vote"
-    permission="training.votable.do_vote"
+    permission="training.votable.can_vote"
     layer="training.votable.interfaces.ITrainingVotableLayer"
     />
 

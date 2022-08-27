@@ -17,13 +17,13 @@
     <div
         id="delete_votings"
         class="btn btn-primary"
-        tal:condition="view/is_manager">
+        tal:condition="view/can_clear_votes">
         Delete all votings of this item
     </div>
     <div
-        id="delete_votings2"
+        id="delete_votings_confirmation"
         class="areyousure warning btn btn-primary"
-        tal:condition="view/is_manager">
+        tal:condition="view/can_clear_votes">
         Are you sure?
     </div>
     <a href="#" class="hiddenStructure" id="context_url"
@@ -32,9 +32,9 @@
 </div>
 
 <script type="text/javascript">
-// JQuery standard mechanism. Only execute the code after the page
-// finished loading.
-$(document).ready(function(){
-    training_votablebehavior.init_voting_viewlet($(".voting"));
-});
+    // JQuery standard mechanism. Only execute the code after the page
+    // finished loading.
+    $(document).ready(function(){
+        training_votablebehavior.init_voting_viewlet($(".voting"));
+    });
 </script>

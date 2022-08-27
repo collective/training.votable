@@ -148,7 +148,6 @@ class Votable(object):
 
     def already_voted(self, request):
         current_user = api.user.get_current()
-        print("already_voted. current_user", current_user)
         return current_user.id in self.annotations["voted"]
 
     def clear(self):

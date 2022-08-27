@@ -15,7 +15,7 @@
     for="training.votable.behaviors.votable.IVotableMarker"
     factory=".voting.VotingPost"
     name="@votes"
-    permission="training.votable.do_vote"
+    permission="training.votable.can_vote"
     />
 
   <plone:service
