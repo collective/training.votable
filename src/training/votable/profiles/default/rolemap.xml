@@ -3,11 +3,17 @@
   <permissions>
   <!-- -*- extra stuff goes here -*- -->
 
-    <permission name="training.votable: View Vote" acquire="True">
-      <role name="Anonymous"/>
+    <permission name="training.votable: View Votes" acquire="True">
+      <role name="Authenticated"/>
+      <role name="Site Administrator"/>
+      <role name="Manager"/>
     </permission>
-    <permission name="training.votable: Do Vote" acquire="True">
-      <role name="Anonymous"/>
+    <permission name="training.votable: Can Vote" acquire="True">
+      <role name="Reviewer"/>
+    </permission>
+    <permission name="training.votable: Clear Votes" acquire="True">
+      <role name="Site Administrator"/>
+      <role name="Manager"/>
     </permission>
     
   </permissions>

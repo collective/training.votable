@@ -8,12 +8,17 @@
 
   <permission
       id="training.votable.view_vote"
-      title="training.votable: View Vote"
+      title="training.votable: View Votes"
       />
 
   <permission
-      id="training.votable.do_vote"
-      title="training.votable: Do Vote"
+      id="training.votable.can_vote"
+      title="training.votable: Can Vote"
+      />
+
+  <permission
+      id="training.votable.clear_votes"
+      title="training.votable: Clear Votes"
       />
 
   </configure>

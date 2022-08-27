@@ -4,5 +4,6 @@ from zope.i18nmessageid import MessageFactory
 
 _ = MessageFactory("training.votable")
 
-DoVotePermission = "training.votable: Do Vote"
-ViewVotePermission = "training.votable: View Vote"
+ViewVotesPermission = "training.votable: View Votes"
+CanVotePermission = "training.votable: Can Vote"
+ClearVotesPermission = "training.votable: Clear Votes"
