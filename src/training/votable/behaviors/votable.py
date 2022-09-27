@@ -22,12 +22,17 @@ KEY = "training.votable.behaviors.votable.Votable"
 
 
 class IVotableMarker(Interface):
+    """Marker interface for content types or instances that should be votable"""
+
     pass
 
 
 @provider(IFormFieldProvider)
 class IVotable(model.Schema):
-    """Former IVoting"""
+    """Behavior interface for the votable behavior
+
+    IVotable(object) returns the adapted object with votable behavior
+    """
 
     if not api.env.debug_mode():
         form.omitted("votes")
@@ -86,6 +91,8 @@ class IVotable(model.Schema):
 @implementer(IVotable)
 @adapter(IVotableMarker)
 class Votable(object):
+    """Adapter implementing the votable behavior"""
+
     def __init__(self, context):
         self.context = context
         annotations = IAnnotations(context)
