@@ -14,9 +14,9 @@ from zope.component import adapter
 from zope.interface import Interface, implementer, provider
 
 """
-The key must be unique. Using the class name with the complete module name
-is a good idea. But be careful, you might want to change the key if you move
-the location to a different place. Else you won't find your own annotations
+The key must be unique. 
+Using the class name with the complete module name
+is a good idea.
 """
 KEY = "training.votable.behaviors.votable.Votable"
 
@@ -34,16 +34,6 @@ class IVotable(model.Schema):
     IVotable(object) returns the adapted object with votable behavior
     """
 
-    if not api.env.debug_mode():
-        form.omitted("votes")
-        form.omitted("voted")
-
-    directives.fieldset(
-        "debug",
-        label="debug",
-        fields=("votes", "voted"),
-    )
-
     votes = schema.Dict(
         title="Vote info",
         key_type=schema.TextLine(title="Voted number"),
@@ -53,11 +43,21 @@ class IVotable(model.Schema):
         required=False,
     )
     voted = schema.List(
-        title="Vote hashes",
+        title="List of users who voted",
         value_type=schema.TextLine(),
         default=[],
         missing_value=[],
         required=False,
+    )
+
+    if not api.env.debug_mode():
+        form.omitted("votes")
+        form.omitted("voted")
+
+    directives.fieldset(
+        "debug",
+        label="debug",
+        fields=("votes", "voted"),
     )
 
     def vote(request):
@@ -107,26 +107,23 @@ class Votable(object):
     def votes(self):
         return self.annotations["votes"]
 
-    @votes.setter
-    def votes(self, value):
-        self.annotations["votes"] = value
+    # @votes.setter
+    # def votes(self, value):
+    #     print("votes behaviors. votes", self)
+    #     self.annotations["votes"] = value
 
     @property
     def voted(self):
         return self.annotations["voted"]
 
-    @voted.setter
-    def voted(self, value):
-        self.annotations["voted"] = value
+    # @voted.setter
+    # def voted(self, value):
+    #     self.annotations["voted"] = value
 
     def vote(self, vote, request):
-        vote = int(vote)
         if self.already_voted(request):
-            # Exceptions can create ugly error messages. If you or your user
-            # can't resolve the error, you should not catch it.
-            # Transactions can throw errors too.
-            # What happens if you catch them?
             raise KeyError("You may not vote twice")
+        vote = int(vote)
         current_user = api.user.get_current()
         self.annotations["voted"].append(current_user.id)
         votes = self.annotations.get("votes", {})
