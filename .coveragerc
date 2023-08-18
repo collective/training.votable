@@ -1,6 +1,0 @@
-[report]
-include =
-    src/training/*
-omit =
-    */test*
-    */upgrades/*

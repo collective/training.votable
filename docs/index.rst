@@ -1,5 +1,0 @@
-================
-training.votable
-================
-
-User documentation
