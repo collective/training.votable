@@ -1,14 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from hashlib import md5
-
 from persistent.dict import PersistentDict
 from persistent.list import PersistentList
 from plone import api, schema
 from plone.autoform import directives as form
 from plone.autoform.interfaces import IFormFieldProvider
 from plone.supermodel import directives, model
-from Products.CMFPlone.utils import safe_bytes
 from zope.annotation.interfaces import IAnnotations
 from zope.component import adapter
 from zope.interface import Interface, implementer, provider
@@ -62,29 +59,28 @@ class IVotable(model.Schema):
 
     def vote(request):
         """
-        Store the vote information, store the request hash to ensure
-        that the user does not vote twice
+        Store the vote information and store the user(name)
+        to ensure that the user does not vote twice.
         """
 
     def average_vote():
         """
-        Return the average voting for an item
+        Return the average voting for an item.
         """
 
     def has_votes():
         """
-        Return whether anybody ever voted for this item
+        Return whether anybody ever voted for this item.
         """
 
     def already_voted(request):
         """
         Return the information wether a person already voted.
-        This is not very high level and can be tricked out easily
         """
 
     def clear():
         """
-        Clear the votes. Should only be called by admins
+        Clear the votes. Should only be called by admins.
         """
 
 
@@ -103,26 +99,30 @@ class Votable(object):
             )
         self.annotations = annotations[KEY]
 
+    # getter
     @property
     def votes(self):
         return self.annotations["votes"]
 
-    # @votes.setter
+    # setter
     # def votes(self, value):
-    #     print("votes behaviors. votes", self)
+    #     """We do not define a setter.
+    #     Function 'vote' is the only one that shall set attributes
+    #     of the context object."""
     #     self.annotations["votes"] = value
 
+    # getter
     @property
     def voted(self):
         return self.annotations["voted"]
 
-    # @voted.setter
+    # setter
     # def voted(self, value):
     #     self.annotations["voted"] = value
 
     def vote(self, vote, request):
         if self.already_voted(request):
-            raise KeyError("You may not vote twice")
+            raise KeyError("You may not vote twice.")
         vote = int(vote)
         current_user = api.user.get_current()
         self.annotations["voted"].append(current_user.id)
