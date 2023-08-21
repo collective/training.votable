@@ -1,1 +1,15 @@
--r requirements_plone60.txt
+-c constraints.txt
+
+cookiecutter
+
+Plone
+# zope.testrunner
+plone.app.testing
+plone.app.robotframework
+collective.MockMailHost
+gocept.pytestlayer
+pytest
+
+
+# List of add-ons that are needed.
+-e .

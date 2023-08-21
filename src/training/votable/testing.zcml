@@ -1,0 +1,19 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="training.votable"
+    >
+
+  <include file="configure.zcml" />
+
+  <!-- <include package="plone.app.dexterity" /> -->
+
+  <genericsetup:registerProfile
+      name="testing"
+      title="training.votable tests"
+      description="Steps to ease tests of training.votable"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      directory="profiles/testing"
+      />
+
+</configure>

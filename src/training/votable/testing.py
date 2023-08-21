@@ -1,35 +1,43 @@
 # -*- coding: utf-8 -*-
+from plone.app.contenttypes.testing import PLONE_APP_CONTENTTYPES_FIXTURE
 from plone.app.robotframework.testing import REMOTE_LIBRARY_BUNDLE_FIXTURE
 from plone.app.testing import (
-    PLONE_FIXTURE,
     FunctionalTesting,
     IntegrationTesting,
     PloneSandboxLayer,
     applyProfile,
 )
 from plone.testing import z2
-
-import training.votable
+from plone.testing import zope
+# from zope.configuration import xmlconfig
 
 
 class TrainingVotableLayer(PloneSandboxLayer):
 
-    defaultBases = (PLONE_FIXTURE,)
+    defaultBases = (PLONE_APP_CONTENTTYPES_FIXTURE,)
 
     def setUpZope(self, app, configurationContext):
         # Load any other ZCML that is required for your tests.
         # The z3c.autoinclude feature is disabled in the Plone fixture base
         # layer.
         import plone.app.dexterity
-
         self.loadZCML(package=plone.app.dexterity)
-        import plone.restapi
 
+        import plone.restapi
         self.loadZCML(package=plone.restapi)
+
+        # training.votable
+        import training.votable
         self.loadZCML(package=training.votable)
+        self.loadZCML("testing.zcml", package=training.votable)
+
+        # xmlconfig.file("configure.zcml", training.votable, context=configurationContext)
+        # xmlconfig.file("testing.zcml", training.votable, context=configurationContext)
+        # zope.installProduct(app, "training.votable")
 
     def setUpPloneSite(self, portal):
         applyProfile(portal, "training.votable:default")
+        applyProfile(portal, "training.votable:testing")
 
 
 TRAINING_VOTABLE_FIXTURE = TrainingVotableLayer()
@@ -42,7 +50,7 @@ TRAINING_VOTABLE_INTEGRATION_TESTING = IntegrationTesting(
 
 
 TRAINING_VOTABLE_FUNCTIONAL_TESTING = FunctionalTesting(
-    bases=(TRAINING_VOTABLE_FIXTURE,),
+    bases=(TRAINING_VOTABLE_FIXTURE, zope.WSGI_SERVER_FIXTURE),
     name="TrainingVotableLayer:FunctionalTesting",
 )
 

@@ -1,0 +1,11 @@
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+    "already_voted": true,
+    "average_vote": 1.0,
+    "can_clear_votes": true,
+    "can_vote": true,
+    "has_votes": true,
+    "total_votes": 1
+}

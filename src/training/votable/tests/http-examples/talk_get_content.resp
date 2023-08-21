@@ -1,0 +1,77 @@
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+    "@components": {
+        "actions": {
+            "@id": "http://localhost:55001/plone/talk-python/@actions"
+        },
+        "aliases": {
+            "@id": "http://localhost:55001/plone/talk-python/@aliases"
+        },
+        "breadcrumbs": {
+            "@id": "http://localhost:55001/plone/talk-python/@breadcrumbs"
+        },
+        "contextnavigation": {
+            "@id": "http://localhost:55001/plone/talk-python/@contextnavigation"
+        },
+        "navigation": {
+            "@id": "http://localhost:55001/plone/talk-python/@navigation"
+        },
+        "navroot": {
+            "@id": "http://localhost:55001/plone/talk-python/@navroot"
+        },
+        "types": {
+            "@id": "http://localhost:55001/plone/talk-python/@types"
+        },
+        "workflow": {
+            "@id": "http://localhost:55001/plone/talk-python/@workflow"
+        }
+    },
+    "@id": "http://localhost:55001/plone/talk-python",
+    "@type": "Document",
+    "UID": "SomeUUID000000000000000000000001",
+    "allow_discussion": false,
+    "blocks": {},
+    "blocks_layout": {
+        "items": []
+    },
+    "contributors": [],
+    "created": "2023-08-21T08:42:18+00:00",
+    "creators": [
+        "test_user_1_"
+    ],
+    "description": "New features, tips and tricks.",
+    "effective": null,
+    "exclude_from_nav": false,
+    "expires": null,
+    "id": "talk-python",
+    "is_folderish": false,
+    "language": "",
+    "layout": "document_view",
+    "lock": {
+        "locked": false,
+        "stealable": true
+    },
+    "modified": "2023-08-21T08:42:18+00:00",
+    "next_item": {},
+    "parent": {
+        "@id": "http://localhost:55001/plone",
+        "@type": "Plone Site",
+        "description": "",
+        "title": "Plone site",
+        "type_title": "Plone Site"
+    },
+    "previous_item": {},
+    "relatedItems": [],
+    "review_state": "private",
+    "rights": "",
+    "subjects": [],
+    "title": "What's new in Python",
+    "type_title": "Page",
+    "version": "current",
+    "voted": [],
+    "votes": {},
+    "working_copy": null,
+    "working_copy_of": null
+}

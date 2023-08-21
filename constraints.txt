@@ -1,1 +1,11 @@
--c constraints_plone60.txt
+-c https://dist.plone.org/release/6.0.6/constraints.txt
+
+# constraint on pip does not work
+# See backend.yml
+pip==23.0.1
+
+# Here contstraints can be added. constraints of packages included in https://dist.plone.org/release/6.0.0a4/constraints.txt cannot be modified. Here does mxdev it's purpose:
+# mx.ini, the configuration file of mxdev allows to, for example, force an increased version of a core package like plone.restapi.
+
+cookiecutter>=2.2.3
+urllib3<=1.9.9
