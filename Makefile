@@ -17,11 +17,11 @@ PYBIN=${VENV_FOLDER}/bin/
 
 # See https://github.com/plone/code-quality
 # Our configuration is in pyproject.toml.
-CODE_QUALITY_VERSION=2.0.0
+CODE_QUALITY_VERSION=2.1.1
 CURRENT_USER=$$(whoami)
 USER_INFO=$$(id -u ${CURRENT_USER}):$$(id -g ${CURRENT_USER})
-LINT=docker run --user="${USER_INFO}" --rm -v "$(PWD)":/github/workspace plone/code-quality:${CODE_QUALITY_VERSION} check
-FORMAT=docker run --user="$(id -u $(whoami)):$(getent group $(whoami)|cut -d: -f3)" --rm -v "$(PWD)":/github/workspace plone/code-quality:${CODE_QUALITY_VERSION} format
+LINT=docker run --rm -v "$(PWD)":/github/workspace plone/code-quality:${CODE_QUALITY_VERSION} check
+FORMAT=docker run --rm -v "$(PWD)":/github/workspace plone/code-quality:${CODE_QUALITY_VERSION} format
 
 
 all: build
