@@ -1,10 +1,6 @@
 name: Testing and Code sanity
 
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+on: [push, pull_request]
 
 jobs:
 
@@ -58,7 +54,6 @@ jobs:
           check: 'zpretty'
 
   tests:
-    if: github.ref_type == 'branch'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
