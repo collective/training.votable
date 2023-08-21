@@ -59,7 +59,7 @@ jobs:
       fail-fast: false
       matrix:
         python:
-          - 3.10
+          - "3.10"
         plone:
           - "6.0.6"
 
