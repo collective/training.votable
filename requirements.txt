@@ -3,10 +3,12 @@
 cookiecutter
 
 Plone
-zope.testrunner
+# zope.testrunner
 plone.app.testing
 plone.app.robotframework
 collective.MockMailHost
+gocept.pytestlayer
+pytest
 
 
 # List of add-ons that are needed.

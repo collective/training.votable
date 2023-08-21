@@ -138,6 +138,7 @@ def save_request_for_docs(name, response, request_text_override=""):
 
 
 class TestVotingBase(unittest.TestCase):
+
     def setUp(self):
         self.statictime = self.setup_with_context_manager(StaticTime())
 
@@ -164,19 +165,6 @@ class TestVotingBase(unittest.TestCase):
 
         setRoles(self.portal, TEST_USER_ID, ["Manager"])
 
-    def setup_with_context_manager(self, cm):
-        """Use a contextmanager to setUp a test case.
-
-        Registering the cm's __exit__ as a cleanup hook *guarantees* that it
-        will be called after a test run, unlike tearDown().
-
-        This is used to make sure plone.restapi never leaves behind any time
-        freezing monkey patches that haven't gotten reverted.
-        """
-        val = cm.__enter__()
-        self.addCleanup(cm.__exit__, None, None, None)
-        return val
-
     def tearDown(self):
         popGlobalRegistry(getSite())
         self.api_session.close()
@@ -186,6 +174,7 @@ class TestVoting(TestVotingBase):
     layer = TRAINING_VOTABLE_FUNCTIONAL_TESTING
 
     def setUp(self):
+        self.app = self.layer["app"]
         super().setUp()
 
     def tearDown(self):
@@ -221,4 +210,4 @@ class TestVoting(TestVotingBase):
             },)
         save_request_and_response_for_docs("talk_vote", response)
         response = response.json()
-        self.assertEqual(response["average_vote"], 1.0)
+        self.assertEqual(response["average_vote"], 1)
