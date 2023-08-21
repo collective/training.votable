@@ -1,57 +1,8 @@
-name: Testing and Code sanity
+name: Testing
 
 on: [push, pull_request]
 
 jobs:
-
-  # black:
-  #   if: github.ref_type == 'branch'
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout codebase
-  #       uses: actions/checkout@v3
-
-  #     - name: Run check
-  #       uses: plone/code-analysis-action@v2
-  #       with:
-  #         base_dir: 'backend'
-  #         check: 'black'
-
-  # flake8:
-  #   if: github.ref_type == 'branch'
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout codebase
-  #       uses: actions/checkout@v3
-
-  #     - name: Run check
-  #       uses: plone/code-analysis-action@v2
-  #       with:
-  #         check: 'flake8'
-
-  # isort:
-  #   if: github.ref_type == 'branch'
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout codebase
-  #       uses: actions/checkout@v3
-
-  #     - name: Run check
-  #       uses: plone/code-analysis-action@v2
-  #       with:
-  #         check: 'isort'
-
-  # zpretty:
-  #   if: github.ref_type == 'branch'
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout codebase
-  #       uses: actions/checkout@v3
-
-  #     - name: Run check
-  #       uses: plone/code-analysis-action@v2
-  #       with:
-  #         check: 'zpretty'
 
   tests:
     runs-on: ubuntu-latest

@@ -1,0 +1,27 @@
+[tool.isort]
+profile = "plone"
+
+[tool.black]
+target-version = ["py310"]
+
+[tool.codespell]
+ignore-words-list = "discreet,succeded"
+skip = "*.po,"
+##
+# Add extra configuration options in .meta.toml:
+#  [pyproject]
+#  codespell_ignores = "foo,bar"
+#  codespell_skip = "*.po,*.map,package-lock.json"
+##
+
+[tool.plone-code-analysis]
+checkers = ["black", "flake8", "isort", "pyroma", "zpretty"]
+formatters = ["black", "isort", "zpretty"]
+paths = "."
+paths_pyroma = "."
+paths_black = "."
+paths_flake8 = "."
+paths_isort = "."
+# paths_pyroma = "."
+paths_zpretty = "."
+
