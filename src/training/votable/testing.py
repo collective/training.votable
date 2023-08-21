@@ -8,8 +8,14 @@ from plone.app.testing import (
     applyProfile,
 )
 from plone.testing import z2
+from plone.testing.zope import WSGI_SERVER_FIXTURE
 
 import training.votable
+
+
+def enable_votable_behavior_for_document(portal):
+    # TODO enable votable behavior for type document
+    pass
 
 
 class TrainingVotableLayer(PloneSandboxLayer):
@@ -28,8 +34,12 @@ class TrainingVotableLayer(PloneSandboxLayer):
         self.loadZCML(package=plone.restapi)
         self.loadZCML(package=training.votable)
 
+        self.loadZCML("testing.zcml", package=training.votable)
+
     def setUpPloneSite(self, portal):
         applyProfile(portal, "training.votable:default")
+        applyProfile(portal, "training.votable:testing")
+        enable_votable_behavior_for_document(portal)
 
 
 TRAINING_VOTABLE_FIXTURE = TrainingVotableLayer()
@@ -42,7 +52,7 @@ TRAINING_VOTABLE_INTEGRATION_TESTING = IntegrationTesting(
 
 
 TRAINING_VOTABLE_FUNCTIONAL_TESTING = FunctionalTesting(
-    bases=(TRAINING_VOTABLE_FIXTURE,),
+    bases=(TRAINING_VOTABLE_FIXTURE, WSGI_SERVER_FIXTURE),
     name="TrainingVotableLayer:FunctionalTesting",
 )
 
