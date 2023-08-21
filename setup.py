@@ -15,7 +15,7 @@ long_description = "\n\n".join(
 setup(
     name="training.votable",
     version="1.0a1",
-    description="like or dislike content",
+    description="Mastering Plone development training backend add-on. Like or dislike content",
     long_description=long_description,
     # Get more from https://pypi.org/classifiers/
     classifiers=[

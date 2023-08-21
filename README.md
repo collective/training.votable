@@ -25,7 +25,7 @@ It provides the code for voting components for a Volto app.
 
 ## Support
 
-If you are having issues, please let us know. https://community.plone.org/
+If you are having issues, please let us know. https://github.com/plone/training/issues
 
 
 ## License
