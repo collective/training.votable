@@ -60,10 +60,8 @@ test_quiet: ## Run tests removing deprecation warnings
 
 .PHONY: lint
 lint:  ## validate with isort, black, flake8, pyroma, zpretty
-	@echo USER_INFO: $(USER_INFO)
 	$(LINT)
 
 .PHONY: format
 format:  ## Format the codebase according to our standards
-	@echo USER_INFO: $(USER_INFO)
 	$(FORMAT)

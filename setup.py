@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 """Installer for the training.votable package."""
 
-from setuptools import find_packages
-from setuptools import setup
-
+from setuptools import find_packages, setup
 
 long_description = "\n\n".join(
     [
@@ -30,6 +28,7 @@ setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
+        "Development Status :: 5 - Production/Stable",
         "Operating System :: OS Independent",
         "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
     ],

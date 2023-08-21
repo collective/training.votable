@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 from plone.app.contenttypes.testing import PLONE_APP_CONTENTTYPES_FIXTURE
 from plone.app.robotframework.testing import REMOTE_LIBRARY_BUNDLE_FIXTURE
-from plone.app.testing import applyProfile
-from plone.app.testing import FunctionalTesting
-from plone.app.testing import IntegrationTesting
-from plone.app.testing import PloneSandboxLayer
-from plone.testing import z2
-from plone.testing import zope
-
+from plone.app.testing import (
+    FunctionalTesting,
+    IntegrationTesting,
+    PloneSandboxLayer,
+    applyProfile,
+)
+from plone.testing import z2, zope
 
 # from zope.configuration import xmlconfig
 
@@ -33,10 +33,6 @@ class TrainingVotableLayer(PloneSandboxLayer):
 
         self.loadZCML(package=training.votable)
         self.loadZCML("testing.zcml", package=training.votable)
-
-        # xmlconfig.file("configure.zcml", training.votable, context=configurationContext)
-        # xmlconfig.file("testing.zcml", training.votable, context=configurationContext)
-        # zope.installProduct(app, "training.votable")
 
     def setUpPloneSite(self, portal):
         applyProfile(portal, "training.votable:default")

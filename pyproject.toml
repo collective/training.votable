@@ -1,8 +1,19 @@
-[tool.isort]
-profile = "plone"
-
 [tool.black]
 target-version = ["py310"]
+
+[tool.isort]
+profile = "black"
+
+[tool.flakeheaven]
+format="grouped"
+max_line_length=88
+show_source=true
+max-complexity=25
+
+[tool.flakeheaven.plugins]
+pycodestyle = ["+*"]
+pyflakes = ["+*"]
+"flake8-*" = ["+*"]
 
 [tool.codespell]
 ignore-words-list = "discreet,succeded"

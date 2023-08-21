@@ -1,24 +1,24 @@
-from pkg_resources import resource_filename
-from plone.app.testing import popGlobalRegistry
-from plone.app.testing import pushGlobalRegistry
-from plone.app.testing import setRoles
-from plone.app.testing import SITE_OWNER_NAME
-from plone.app.testing import SITE_OWNER_PASSWORD
-from plone.app.testing import TEST_USER_ID
-from plone.app.testing import TEST_USER_PASSWORD
-from plone.restapi.testing import register_static_uuid_utility
-from plone.restapi.testing import RelativeSession
-from plone.restapi.tests.statictime import StaticTime
-from plone.testing.zope import Browser
-from training.votable.testing import TRAINING_VOTABLE_FUNCTIONAL_TESTING
-from zope.component.hooks import getSite
-
 import collections
 import json
 import re
-import transaction
 import unittest
 
+import transaction
+from pkg_resources import resource_filename
+from plone.app.testing import (
+    SITE_OWNER_NAME,
+    SITE_OWNER_PASSWORD,
+    TEST_USER_ID,
+    popGlobalRegistry,
+    pushGlobalRegistry,
+    setRoles,
+)
+from plone.restapi.testing import RelativeSession, register_static_uuid_utility
+from plone.restapi.tests.statictime import StaticTime
+from plone.testing.zope import Browser
+from zope.component.hooks import getSite
+
+from training.votable.testing import TRAINING_VOTABLE_FUNCTIONAL_TESTING
 
 TUS_HEADERS = [
     "upload-offset",
