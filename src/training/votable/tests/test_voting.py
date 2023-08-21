@@ -1,15 +1,15 @@
 from pkg_resources import resource_filename
+from plone.app.testing import popGlobalRegistry
+from plone.app.testing import pushGlobalRegistry
 from plone.app.testing import setRoles
 from plone.app.testing import SITE_OWNER_NAME
 from plone.app.testing import SITE_OWNER_PASSWORD
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import TEST_USER_PASSWORD
+from plone.restapi.testing import register_static_uuid_utility
 from plone.restapi.testing import RelativeSession
 from plone.restapi.tests.statictime import StaticTime
 from plone.testing.zope import Browser
-from plone.app.testing import popGlobalRegistry
-from plone.app.testing import pushGlobalRegistry
-from plone.restapi.testing import register_static_uuid_utility
 from training.votable.testing import TRAINING_VOTABLE_FUNCTIONAL_TESTING
 from zope.component.hooks import getSite
 
@@ -138,7 +138,6 @@ def save_request_for_docs(name, response, request_text_override=""):
 
 
 class TestVotingBase(unittest.TestCase):
-
     def setUp(self):
         self.statictime = self.setup_with_context_manager(StaticTime())
 
@@ -218,9 +217,8 @@ class TestVoting(TestVotingBase):
         # Vote on talk
         response = self.api_session.post(
             f"{talk_python.absolute_url()}/@votes",
-            json={
-                "rating": 1
-            },)
+            json={"rating": 1},
+        )
         save_request_and_response_for_docs("talk_vote", response)
         response = response.json()
         self.assertEqual(response["average_vote"], 1)

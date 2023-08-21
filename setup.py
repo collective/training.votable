@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 """Installer for the training.votable package."""
 
-from setuptools import find_packages, setup
+from setuptools import find_packages
+from setuptools import setup
+
 
 long_description = "\n\n".join(
     [
@@ -66,7 +68,7 @@ setup(
             "plone.app.contenttypes",
             "plone.app.robotframework[debug]",
             "collective.MockMailHost",
-            "pytest"
+            "pytest",
         ],
     },
     entry_points="""

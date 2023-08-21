@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <layers>
-  <layer
-      name="training.votable"
-      interface="training.votable.interfaces.ITrainingVotableLayer"
-      />
+  <layer interface="training.votable.interfaces.ITrainingVotableLayer"
+         name="training.votable"
+  />
 </layers>

@@ -3,16 +3,13 @@ from plone import api
 from plone.protect.interfaces import IDisableCSRFProtection
 from plone.restapi.deserializer import json_body
 from plone.restapi.services import Service
+from training.votable import CanVotePermission
+from training.votable import ClearVotesPermission
+from training.votable import ViewVotesPermission
+from training.votable.behaviors.votable import IVotable
 from zExceptions import Unauthorized
 from zope.globalrequest import getRequest
 from zope.interface import alsoProvides
-
-from training.votable import (
-    CanVotePermission,
-    ClearVotesPermission,
-    ViewVotesPermission,
-)
-from training.votable.behaviors.votable import IVotable
 
 
 class VotingGet(Service):

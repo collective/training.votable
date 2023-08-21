@@ -2,6 +2,7 @@
 """Init and utils."""
 from zope.i18nmessageid import MessageFactory
 
+
 _ = MessageFactory("training.votable")
 
 ViewVotesPermission = "training.votable: View Votes"

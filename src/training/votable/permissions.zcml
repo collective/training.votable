@@ -1,25 +1,26 @@
 <configure
-  xmlns="http://namespaces.zope.org/zope"
-  xmlns:zcml="http://namespaces.zope.org/zcml"
-  i18n_domain="plone">
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    i18n_domain="plone"
+    >
 
   <configure zcml:condition="installed AccessControl.security">
-  <!-- -*- extra stuff goes here -*- -->
+    <!-- -*- extra stuff goes here -*- -->
 
-  <permission
-      id="training.votable.view_vote"
-      title="training.votable: View Votes"
-      />
+    <permission
+        id="training.votable.view_vote"
+        title="training.votable: View Votes"
+        />
 
-  <permission
-      id="training.votable.can_vote"
-      title="training.votable: Can Vote"
-      />
+    <permission
+        id="training.votable.can_vote"
+        title="training.votable: Can Vote"
+        />
 
-  <permission
-      id="training.votable.clear_votes"
-      title="training.votable: Clear Votes"
-      />
+    <permission
+        id="training.votable.clear_votes"
+        title="training.votable: Clear Votes"
+        />
 
   </configure>
 

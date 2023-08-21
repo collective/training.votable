@@ -2,13 +2,18 @@
 
 from persistent.dict import PersistentDict
 from persistent.list import PersistentList
-from plone import api, schema
+from plone import api
+from plone import schema
 from plone.autoform import directives as form
 from plone.autoform.interfaces import IFormFieldProvider
-from plone.supermodel import directives, model
+from plone.supermodel import directives
+from plone.supermodel import model
 from zope.annotation.interfaces import IAnnotations
 from zope.component import adapter
-from zope.interface import Interface, implementer, provider
+from zope.interface import implementer
+from zope.interface import Interface
+from zope.interface import provider
+
 
 """
 The key must be unique. 
