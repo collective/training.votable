@@ -2,10 +2,10 @@ from persistent.dict import PersistentDict
 from persistent.list import PersistentList
 from plone import api
 from plone import schema
-from plone.autoform import directives as form
+from plone.autoform import directives
 from plone.autoform.interfaces import IFormFieldProvider
-from plone.supermodel import directives
 from plone.supermodel import model
+from plone.supermodel.directives import fieldset
 from zope.annotation.interfaces import IAnnotations
 from zope.component import adapter
 from zope.interface import implementer
@@ -42,6 +42,7 @@ class IVotable(model.Schema):
         missing_value={},
         required=False,
     )
+
     voted = schema.List(
         title="List of users who voted",
         value_type=schema.TextLine(),
@@ -51,10 +52,10 @@ class IVotable(model.Schema):
     )
 
     if not api.env.debug_mode():
-        form.omitted("votes")
-        form.omitted("voted")
+        directives.omitted("votes")
+        directives.omitted("voted")
 
-    directives.fieldset(
+    fieldset(
         "debug",
         label="debug",
         fields=("votes", "voted"),
