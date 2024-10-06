@@ -1,0 +1,32 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="training.votable"
+    >
+
+  <genericsetup:registerProfile
+      name="default"
+      title="training.votable: Install"
+      description="Package to configure a new training.votable site"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      directory="profiles/default"
+      />
+
+  <genericsetup:registerProfile
+      name="uninstall"
+      title="training.votable: Uninstall"
+      description="Uninstall training.votable setup."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      directory="profiles/uninstall"
+      />
+
+  <!-- Hide Uninstall Profile-->
+  <utility
+      factory=".setuphandlers.HiddenProfiles"
+      name="training.votable"
+      />
+
+
+  <include package=".upgrades" />
+
+</configure>
