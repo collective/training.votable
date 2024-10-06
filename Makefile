@@ -1,7 +1,12 @@
-SHELL := /bin/bash
-CURRENT_DIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
-
-version = 3
+### Defensive settings for make:
+#     https://tech.davis-hansson.com/p/make/
+SHELL:=bash
+.ONESHELL:
+.SHELLFLAGS:=-xeu -o pipefail -O inherit_errexit -c
+.SILENT:
+.DELETE_ON_ERROR:
+MAKEFLAGS+=--warn-undefined-variables
+MAKEFLAGS+=--no-builtin-rules
 
 # We like colors
 # From: https://coderwall.com/p/izxssa/colored-makefile-for-golang-projects
@@ -10,18 +15,26 @@ GREEN=`tput setaf 2`
 RESET=`tput sgr0`
 YELLOW=`tput setaf 3`
 
-ADDONBASE=./
-ADDONFOLDER=${ADDONBASE}src/
-VENV_FOLDER=./venv
-PYBIN=${VENV_FOLDER}/bin/
+# Python checks
+PYTHON?=python3
 
-# See https://github.com/plone/code-quality
-# Our configuration is in pyproject.toml.
-CODE_QUALITY_VERSION=2.1.1
-CURRENT_USER=$$(whoami)
-USER_INFO=$$(id -u ${CURRENT_USER}):$$(id -g ${CURRENT_USER})
-LINT=docker run --rm -v "$(PWD)":/github/workspace plone/code-quality:${CODE_QUALITY_VERSION} check
-FORMAT=docker run --rm -v "$(PWD)":/github/workspace plone/code-quality:${CODE_QUALITY_VERSION} format
+# installed?
+ifeq (, $(shell which $(PYTHON) ))
+  $(error "PYTHON=$(PYTHON) not found in $(PATH)")
+endif
+
+# version ok?
+PYTHON_VERSION_MIN=3.8
+PYTHON_VERSION_OK=$(shell $(PYTHON) -c "import sys; print((int(sys.version_info[0]), int(sys.version_info[1])) >= tuple(map(int, '$(PYTHON_VERSION_MIN)'.split('.'))))")
+ifeq ($(PYTHON_VERSION_OK),0)
+  $(error "Need python $(PYTHON_VERSION) >= $(PYTHON_VERSION_MIN)")
+endif
+
+BACKEND_FOLDER=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
+
+GIT_FOLDER=$(BACKEND_FOLDER)/.git
+VENV_FOLDER=$(BACKEND_FOLDER)/.venv
+BIN_FOLDER=$(VENV_FOLDER)/bin
 
 
 all: build
@@ -30,38 +43,70 @@ all: build
 # And add help text after each target name starting with '\#\#'
 .PHONY: help
 help: ## This help message
-	@grep -E '^[a-zA-Z0-9._-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-venv:
-	python$(version) -m venv venv
-	venv/bin/python -m pip install pip==23.0.1
-	venv/bin/pip install -U pip wheel mxdev
+$(BIN_FOLDER)/pip $(BIN_FOLDER)/tox $(BIN_FOLDER)/pipx $(BIN_FOLDER)/uv $(BIN_FOLDER)/mxdev:
+	@echo "$(GREEN)==> Setup Virtual Env$(RESET)"
+	$(PYTHON) -m venv $(VENV_FOLDER)
+	$(BIN_FOLDER)/pip install -U "pip" "uv" "wheel" "pipx" "tox" "pre-commit"
+	if [ -d $(GIT_FOLDER) ]; then $(BIN_FOLDER)/pre-commit install; else echo "$(RED) Not installing pre-commit$(RESET)";fi
 
-requirements-mxdev.txt: venv # pip
-	venv/bin/mxdev -c mx.ini
-	venv/bin/pip install -r requirements-mxdev.txt
+instance/etc/zope.ini: $(BIN_FOLDER)/pip  ## Create instance configuration
+	@echo "$(GREEN)==> Create instance configuration$(RESET)"
+	$(BIN_FOLDER)/pipx run cookiecutter -f --no-input --config-file instance.yaml gh:plone/cookiecutter-zope-instance
+
+.PHONY: config
+config: instance/etc/zope.ini
+
+.PHONY: build-dev
+build-dev: config ## Install Plone packages
+	@echo "$(GREEN)==> Setup Build$(RESET)"
+	$(BIN_FOLDER)/pipx run mxdev -c mx.ini
+	$(BIN_FOLDER)/uv pip install -r requirements-mxdev.txt
+
+.PHONY: install
+install: build-dev ## Install Plone
 
 .PHONY: build
-build: requirements-mxdev.txt ## Build Plone
-	venv/bin/cookiecutter -f --no-input --config-file instance.yml https://github.com/plone/cookiecutter-zope-instance
+build: build-dev ## Install Plone
 
-.PHONY: pip
-pip: ## Update Python venv
-	venv/bin/mxdev -c mx.ini
-	venv/bin/pip install -r requirements-mxdev.txt
+.PHONY: clean
+clean: ## Clean environment
+	@echo "$(RED)==> Cleaning environment and build$(RESET)"
+	rm -rf $(VENV_FOLDER) pyvenv.cfg .installed.cfg instance .tox .venv .pytest_cache
 
-.PHONY: Test
-test:  ## Test
-	venv/bin/pytest
+.PHONY: start
+start: ## Start a Plone instance on localhost:8080
+	PYTHONWARNINGS=ignore $(BIN_FOLDER)/runwsgi instance/etc/zope.ini
 
-.PHONY: test_quiet
-test_quiet: ## Run tests removing deprecation warnings
-	venv/bin/pytest --disable-warnings
+.PHONY: console
+console: instance/etc/zope.ini ## Start a console into a Plone instance
+	PYTHONWARNINGS=ignore $(BIN_FOLDER)/zconsole debug instance/etc/zope.conf
 
-.PHONY: lint
-lint:  ## validate with isort, black, flake8, pyroma, zpretty
-	$(LINT)
+.PHONY: create-site
+create-site: instance/etc/zope.ini ## Create a new site from scratch
+	PYTHONWARNINGS=ignore $(BIN_FOLDER)/zconsole run instance/etc/zope.conf ./scripts/create_site.py
 
-.PHONY: format
-format:  ## Format the codebase according to our standards
-	$(FORMAT)
+.PHONY: check
+check: $(BIN_FOLDER)/tox ## Check and fix code base according to Plone standards
+	@echo "$(GREEN)==> Format codebase$(RESET)"
+	$(BIN_FOLDER)/tox -e lint
+
+# i18n
+$(BIN_FOLDER)/i18ndude: $(BIN_FOLDER)/pip
+	@echo "$(GREEN)==> Install translation tools$(RESET)"
+	$(BIN_FOLDER)/uv pip install i18ndude
+
+.PHONY: i18n
+i18n: $(BIN_FOLDER)/i18ndude ## Update locales
+	@echo "$(GREEN)==> Updating locales$(RESET)"
+	$(BIN_FOLDER)/update_locale
+
+# Tests
+.PHONY: test
+test: $(BIN_FOLDER)/tox ## run tests
+	$(BIN_FOLDER)/tox -e test
+
+.PHONY: test-coverage
+test-coverage: $(BIN_FOLDER)/tox ## run tests with coverage
+	$(BIN_FOLDER)/tox -e coverage

@@ -1,24 +1,25 @@
-# -*- coding: utf-8 -*-
 """Installer for the training.votable package."""
 
-from setuptools import find_packages, setup
+from pathlib import Path
+from setuptools import find_packages
+from setuptools import setup
 
-long_description = "\n\n".join(
-    [
-        open("README.md").read(),
-        open("CONTRIBUTORS.rst").read(),
-        open("CHANGES.rst").read(),
-    ]
-)
+
+long_description = f"""
+{Path("README.md").read_text()}\n
+{Path("CONTRIBUTORS.md").read_text()}\n
+{Path("CHANGES.md").read_text()}\n
+"""
 
 
 setup(
     name="training.votable",
-    version="1.0a1",
+    version="1.0.0a0",
     description="Mastering Plone development training backend add-on. Like or dislike content",
     long_description=long_description,
-    # Get more from https://pypi.org/classifiers/
+    long_description_content_type="text/markdown",
     classifiers=[
+        "Development Status :: 3 - Alpha",
         "Environment :: Web Environment",
         "Framework :: Plone",
         "Framework :: Plone :: Addon",
@@ -28,19 +29,18 @@ setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
-        "Development Status :: 5 - Production/Stable",
+        "Programming Language :: Python :: 3.12",
         "Operating System :: OS Independent",
         "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
     ],
     keywords="Python Plone CMS",
-    author="ksuess",
-    author_email="k.suess@rohberg.ch",
+    author="Plone Community",
+    author_email="collective@plone.org",
     url="https://github.com/collective/training.votable",
     project_urls={
-        "PyPI": "https://pypi.python.org/pypi/training.votable",
+        "PyPI": "https://pypi.org/project/training.votable",
         "Source": "https://github.com/collective/training.votable",
         "Tracker": "https://github.com/collective/training.votable/issues",
-        # 'Documentation': 'https://training.votable.readthedocs.io/en/latest/',
     },
     license="GPL version 2",
     packages=find_packages("src", exclude=["ez_setup"]),
@@ -51,23 +51,20 @@ setup(
     python_requires=">=3.8",
     install_requires=[
         "setuptools",
-        # -*- Extra requirements: -*-
-        "z3c.jbot",
-        "plone.api>=1.8.4",
-        "plone.app.dexterity",
+        "Products.CMFPlone",
+        "plone.api",
+        "plone.restapi",
+        "plone.volto",
     ],
     extras_require={
         "test": [
-            "gocept.pytestlayer",
+            "zest.releaser[recommended]",
+            "zestreleaser.towncrier",
             "plone.app.testing",
-            # Plone KGS does not use this version, because it would break
-            # Remove if your package shall be part of coredev.
-            # plone_coredev tests as of 2016-04-01.
-            "plone.testing>=5.0.0",
-            "plone.app.contenttypes",
-            "plone.app.robotframework[debug]",
-            "collective.MockMailHost",
+            "plone.restapi[test]",
             "pytest",
+            "pytest-cov",
+            "pytest-plone>=0.5.0",
         ],
     },
     entry_points="""
