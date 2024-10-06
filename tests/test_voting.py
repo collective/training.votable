@@ -9,7 +9,7 @@ from plone.restapi.testing import register_static_uuid_utility
 from plone.restapi.testing import RelativeSession
 from plone.restapi.tests.statictime import StaticTime
 from plone.testing.zope import Browser
-from training.votable.testing import TRAINING_VOTABLE_FUNCTIONAL_TESTING
+from training.votable.testing import FUNCTIONAL_TESTING
 from zope.component.hooks import getSite
 
 import collections
@@ -182,7 +182,7 @@ class TestVotingBase(unittest.TestCase):
 
 
 class TestVoting(TestVotingBase):
-    layer = TRAINING_VOTABLE_FUNCTIONAL_TESTING
+    layer = FUNCTIONAL_TESTING
 
     def setUp(self):
         self.app = self.layer["app"]

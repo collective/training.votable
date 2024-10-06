@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layers>
-  <layer interface="training.votable.interfaces.ITrainingVotableLayer"
+  <layer interface="training.votable.interfaces.IBrowserLayer"
          name="training.votable"
   />
 </layers>

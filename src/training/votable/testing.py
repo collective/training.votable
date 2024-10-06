@@ -4,31 +4,21 @@ from plone.app.testing import applyProfile
 from plone.app.testing import FunctionalTesting
 from plone.app.testing import IntegrationTesting
 from plone.app.testing import PloneSandboxLayer
-from plone.testing import z2
-from plone.testing import zope
+from plone.testing.zope import WSGI_SERVER_FIXTURE
+
+import training.votable  # noQA
 
 
-# from zope.configuration import xmlconfig
-
-
-class TrainingVotableLayer(PloneSandboxLayer):
+class Layer(PloneSandboxLayer):
     defaultBases = (PLONE_APP_CONTENTTYPES_FIXTURE,)
 
     def setUpZope(self, app, configurationContext):
         # Load any other ZCML that is required for your tests.
         # The z3c.autoinclude feature is disabled in the Plone fixture base
         # layer.
-        import plone.app.dexterity
-
-        self.loadZCML(package=plone.app.dexterity)
-
         import plone.restapi
 
         self.loadZCML(package=plone.restapi)
-
-        # training.votable
-        import training.votable
-
         self.loadZCML(package=training.votable)
         self.loadZCML("testing.zcml", package=training.votable)
 
@@ -37,26 +27,25 @@ class TrainingVotableLayer(PloneSandboxLayer):
         applyProfile(portal, "training.votable:testing")
 
 
-TRAINING_VOTABLE_FIXTURE = TrainingVotableLayer()
+FIXTURE = Layer()
 
-
-TRAINING_VOTABLE_INTEGRATION_TESTING = IntegrationTesting(
-    bases=(TRAINING_VOTABLE_FIXTURE,),
-    name="TrainingVotableLayer:IntegrationTesting",
+INTEGRATION_TESTING = IntegrationTesting(
+    bases=(FIXTURE,),
+    name="Training.VotableLayer:IntegrationTesting",
 )
 
 
-TRAINING_VOTABLE_FUNCTIONAL_TESTING = FunctionalTesting(
-    bases=(TRAINING_VOTABLE_FIXTURE, zope.WSGI_SERVER_FIXTURE),
-    name="TrainingVotableLayer:FunctionalTesting",
+FUNCTIONAL_TESTING = FunctionalTesting(
+    bases=(FIXTURE, WSGI_SERVER_FIXTURE),
+    name="Training.VotableLayer:FunctionalTesting",
 )
 
 
-TRAINING_VOTABLE_ACCEPTANCE_TESTING = FunctionalTesting(
+ACCEPTANCE_TESTING = FunctionalTesting(
     bases=(
-        TRAINING_VOTABLE_FIXTURE,
+        FIXTURE,
         REMOTE_LIBRARY_BUNDLE_FIXTURE,
-        z2.ZSERVER_FIXTURE,
+        WSGI_SERVER_FIXTURE,
     ),
-    name="TrainingVotableLayer:AcceptanceTesting",
+    name="Training.VotableLayer:AcceptanceTesting",
 )
