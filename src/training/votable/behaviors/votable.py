@@ -1,5 +1,5 @@
-from persistent.dict import PersistentDict
 from persistent.list import PersistentList
+from persistent.mapping import PersistentMapping
 from plone import api
 from plone import schema
 from plone.autoform import directives
@@ -98,8 +98,8 @@ class Votable:
         annotations = IAnnotations(context)
         if KEY not in annotations.keys():
             # You know what happens if we don't use persistent classes here?
-            annotations[KEY] = PersistentDict(
-                {"voted": PersistentList(), "votes": PersistentDict()}
+            annotations[KEY] = PersistentMapping(
+                {"voted": PersistentList(), "votes": PersistentMapping()}
             )
         self.annotations = annotations[KEY]
 
@@ -160,7 +160,7 @@ class Votable:
 
     def clear(self):
         annotations = IAnnotations(self.context)
-        annotations[KEY] = PersistentDict(
-            {"voted": PersistentList(), "votes": PersistentDict()}
+        annotations[KEY] = PersistentMapping(
+            {"voted": PersistentList(), "votes": PersistentMapping()}
         )
         self.annotations = annotations[KEY]
