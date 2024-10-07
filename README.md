@@ -1,33 +1,9 @@
 # training.votable
 
-Mastering Plone development training backend add-on. Like or dislike content
+Mastering Plone Development training – backend add-on for the votable behavior
 
-## Features
+`training.votable` provides the code for the voting behavior and REST services.
+It is the counter part of the Plone frontend add-on [`volto-training-votable` ](https://github.com/collective/volto-training-votable) which provides the components and actions for voting on arbitrary content type instances by authenticated users.
 
-TODO: List our awesome features
+`volto-training-votable` and `training.votable` are part of the training story of 'Mastering Plone Development' on [training.plone.org/mastering-plone](https://training.plone.org/mastering-plone/voting-story).
 
-## Installation
-
-Install training.votable with `pip`:
-
-```shell
-pip install training.votable
-```
-And to create the Plone site:
-
-```shell
-make create_site
-```
-
-## Contribute
-
-- [Issue Tracker](https://github.com/collective/training.votable/issues)
-- [Source Code](https://github.com/collective/training.votable/)
-
-## License
-
-The project is licensed under GPLv2.
-
-## Credits and Acknowledgements 🙏
-
-Crafted with care by **Generated using [Cookieplone (0.7.1)](https://github.com/plone/cookieplone) and [cookiecutter-plone (314a3e1)](https://github.com/plone/cookiecutter-plone/commit/314a3e1d47bb00bd8390e29c08b0e54f274f3b96) on 2024-10-06 16:31:55.177671**. A special thanks to all contributors and supporters!
